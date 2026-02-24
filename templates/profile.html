@@ -1,80 +1,96 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row justify-content-center mb-5">
-    <div class="col-md-8 col-lg-6 mt-4">
-        <div class="page-header text-center mb-5">
-            <h2 class="fw-bold" style="color: var(--primary-dark);">ข้อมูลโปรไฟล์ส่วนตัว</h2>
+<div class="flex justify-center animate-fade-in-up">
+    <div class="w-full max-w-xl mt-4">
+        <div class="page-header text-center mb-8">
+            <h2 class="text-2xl font-bold text-primary-800">ข้อมูลโปรไฟล์ส่วนตัว</h2>
         </div>
-        <div class="card shadow-sm border-0 rounded-4">
-            <div class="card-body p-4 p-md-5">
-                <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
+        <div class="bg-white rounded-3xl shadow-md border border-primary-50 p-6 md:p-10 relative overflow-hidden">
+            <!-- Decorative circle -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-100/50 rounded-full blur-2xl"></div>
 
-                    <div class="text-center mb-4">
-                        <div class="position-relative d-inline-block">
-                            {% if current_user.profile_image %}
-                            <img src="{{ current_user.profile_image }}" alt="Profile Image"
-                                class="rounded-circle object-fit-cover shadow-sm border"
-                                style="width: 150px; height: 150px;">
-                            {% else %}
-                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center shadow-sm text-white fs-1 border"
-                                style="width: 150px; height: 150px;">
-                                👤
-                            </div>
-                            {% endif %}
+            <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data" class="relative z-10">
+
+                <div class="text-center mb-6">
+                    <div class="inline-block relative">
+                        {% if current_user.profile_image %}
+                        <img src="{{ current_user.profile_image }}" alt="Profile Image"
+                            class="w-36 h-36 rounded-full object-cover shadow-md border-4 border-white mx-auto">
+                        {% else %}
+                        <div
+                            class="w-36 h-36 rounded-full bg-primary-100 flex items-center justify-center shadow-md text-5xl border-4 border-white mx-auto text-primary-400">
+                            👤
                         </div>
+                        {% endif %}
                     </div>
+                </div>
 
-                    <div class="mb-4 text-center">
-                        <label for="profile_image" class="form-label text-muted d-block">เปลี่ยนรูปโปรไฟล์</label>
-                        <input class="form-control form-control-sm mx-auto" type="file" id="profile_image"
-                            name="profile_image" accept="image/*" style="max-width: 300px;">
+                <div class="mb-8 text-center">
+                    <label for="profile_image"
+                        class="block text-sm font-bold text-primary-700 mb-2">เปลี่ยนรูปโปรไฟล์</label>
+                    <input type="file" id="profile_image" name="profile_image" accept="image/*"
+                        class="mx-auto max-w-xs border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 text-sm shadow-inner file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 hover:file:shadow-md file:transition-all cursor-pointer w-full focus:outline-none focus:ring-2 focus:ring-primary-400 transition-all">
+                </div>
+
+                <hr class="border-primary-100 my-8">
+
+                <div class="mb-5">
+                    <label class="block text-sm font-bold text-primary-800 mb-2">ชื่อผู้ใช้งาน (Username)</label>
+                    <input type="text" value="{{ current_user.username }}" disabled
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/50 text-primary-400 cursor-not-allowed shadow-inner font-medium">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label for="first_name" class="block text-sm font-bold text-primary-800 mb-2">ชื่อจริง</label>
+                        <input type="text" id="first_name" name="first_name" placeholder="กรอกชื่อจริง"
+                            value="{{ current_user.first_name or '' }}"
+                            class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
                     </div>
-
-                    <hr class="my-4 text-muted">
-
-                    <div class="mb-3">
-                        <label class="form-label text-muted">ชื่อผู้ใช้งาน (Username)</label>
-                        <input type="text" class="form-control bg-light" value="{{ current_user.username }}" disabled>
+                    <div>
+                        <label for="last_name" class="block text-sm font-bold text-primary-800 mb-2">นามสกุล</label>
+                        <input type="text" id="last_name" name="last_name" placeholder="กรอกนามสกุล"
+                            value="{{ current_user.last_name or '' }}"
+                            class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
                     </div>
+                </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <label for="first_name" class="form-label">ชื่อจริง</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name"
-                                placeholder="กรอกชื่อจริง" value="{{ current_user.first_name or '' }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="last_name" class="form-label">นามสกุล</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name"
-                                placeholder="กรอกนามสกุล" value="{{ current_user.last_name or '' }}">
-                        </div>
-                    </div>
+                <div class="mb-5">
+                    <label for="phone" class="block text-sm font-bold text-primary-800 mb-2">เบอร์โทรศัพท์</label>
+                    <input type="tel" id="phone" name="phone" placeholder="เช่น 0812345678"
+                        value="{{ current_user.phone or '' }}"
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
+                </div>
 
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="เช่น 0812345678"
-                            value="{{ current_user.phone or '' }}">
-                    </div>
+                <div class="mb-5">
+                    <label for="address"
+                        class="block text-sm font-bold text-primary-800 mb-2">ที่อยู่สำหรับจัดส่งเริ่มต้น</label>
+                    <textarea id="address" name="address" rows="3"
+                        placeholder="ระบุที่อยู่ เพื่อใช้ในการสั่งซื้อครั้งถัดไปให้อัตโนมัติ..."
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner">{{ current_user.address or '' }}</textarea>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="address" class="form-label">ที่อยู่สำหรับจัดส่งเริ่มต้น</label>
-                        <textarea class="form-control" id="address" name="address" rows="3"
-                            placeholder="ระบุที่อยู่ เพื่อใช้ในการสั่งซื้อครั้งถัดไปให้อัตโนมัติ...">{{ current_user.address or '' }}</textarea>
-                    </div>
+                <div class="mb-8">
+                    <label for="new_password" class="block text-sm font-bold text-primary-800 mb-2">
+                        เปลี่ยนรหัสผ่านใหม่ <span
+                            class="text-primary-400 text-xs font-normal ml-1">(ปล่อยว่างไว้หากไม่ต้องการเปลี่ยน)</span>
+                    </label>
+                    <input type="password" id="new_password" name="new_password" placeholder="รหัสผ่านใหม่"
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
+                </div>
 
-                    <div class="mb-4">
-                        <label for="new_password" class="form-label">เปลี่ยนรหัสผ่านใหม่ <span
-                                class="text-muted fs-6 mb-0">(ปล่อยอ้างไว้หากไม่ต้องการเปลี่ยน)</span></label>
-                        <input type="password" class="form-control" id="new_password" name="new_password"
-                            placeholder="รหัสผ่านใหม่">
-                    </div>
+                <button type="submit"
+                    class="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-lg font-medium transition-all shadow-md hover:shadow-lg btn-3d flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    บันทึกข้อมูล
+                </button>
 
-                    <button type="submit"
-                        class="btn btn-primary-custom w-100 py-3 fs-5 mt-3 shadow-sm">บันทึกการเปลี่ยนแปลง</button>
-
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 </div>

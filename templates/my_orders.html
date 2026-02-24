@@ -1,82 +1,110 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header mt-4 mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-dark);">ประวัติคำสั่งซื้อของฉัน</h2>
+<div class="page-header page-header-left mt-4 mb-6 animate-fade-in-up">
+    <h2 class="text-2xl font-bold text-primary-800">ประวัติคำสั่งซื้อของฉัน</h2>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        {% if orders %}
-        {% for order in orders %}
-        <div class="card shadow-sm mb-4 border-0" style="border-radius: 16px; overflow: hidden;">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
-                <div>
-                    <span class="text-muted small">คำสั่งซื้อรหัส:</span> <strong>#{{ order.id }}</strong>
-                    <br>
-                    <span class="text-muted small">สั่งซื้อเมื่อ: {{ order.created_at.strftime('%Y-%m-%d %H:%M')
-                        }}</span>
-                </div>
-                <div class="text-end">
-                    {% set status_color = 'secondary' %}
-                    {% if order.status == 'เตรียมสินค้า' %}{% set status_color = 'warning text-dark' %}{% endif %}
-                    {% if order.status == 'ขนส่งเข้ารับ' %}{% set status_color = 'info text-dark' %}{% endif %}
-                    {% if order.status == 'ระหว่างส่ง' %}{% set status_color = 'primary' %}{% endif %}
-                    {% if order.status == 'จัดส่งสำเร็จ' %}{% set status_color = 'success' %}{% endif %}
+{% if orders %}
+<div class="space-y-6">
+    {% for order in orders %}
+    <div class="bg-white rounded-2xl shadow-sm border border-primary-50 overflow-hidden animate-fade-in-up"
+        style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+        <div
+            class="bg-primary-50/50 px-6 py-4 flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-primary-100">
+            <div>
+                <span class="text-primary-500 text-sm font-medium">คำสั่งซื้อรหัส:</span> <strong
+                    class="text-primary-800 text-lg ml-1">#{{ order.id
+                    }}</strong>
+                <br>
+                <span class="text-primary-400 text-sm flex items-center gap-1 mt-1"><svg class="w-4 h-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg> {{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            </div>
+            <div>
+                {% set status_classes = {
+                'เตรียมสินค้า': 'bg-yellow-100 text-yellow-700 border-yellow-200',
+                'ขนส่งเข้ารับ': 'bg-blue-100 text-blue-700 border-blue-200',
+                'ระหว่างส่ง': 'bg-indigo-100 text-indigo-700 border-indigo-200',
+                'จัดส่งสำเร็จ': 'bg-green-100 text-green-700 border-green-200'
+                } %}
+                <span
+                    class="px-4 py-1.5 rounded-full text-sm font-bold border shadow-sm {{ status_classes.get(order.status, 'bg-gray-100 text-gray-600 border-gray-200') }}">
+                    {{ order.status }}
+                </span>
+            </div>
+        </div>
 
-                    <span class="badge bg-{{ status_color }} px-3 py-2 fs-6 rounded-pill">{{ order.status }}</span>
-                </div>
+        <div class="p-2">
+            <table class="w-full">
+                <tbody>
+                    {% for item in order.items %}
+                    <tr class="hover:bg-primary-50/30 transition-colors">
+                        <td class="py-3 px-4 w-24">
+                            {% if item.product.image_url %}
+                            <img src="{{ item.product.image_url }}" class="w-16 h-16 rounded-xl object-cover shadow-sm">
+                            {% else %}
+                            <div class="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center">
+                                <span class="text-primary-400 text-xs">ไม่มีรูป</span>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-2">
+                            <a href="{{ url_for('product_detail', product_id=item.product.id) }}"
+                                class="font-bold text-primary-900 hover:text-primary-600 transition">{{
+                                item.product.name }}</a>
+                            <p class="text-primary-500 text-sm mt-1">฿{{ "%.2f"|format(item.price_at_booking) }} <span
+                                    class="mx-1 text-primary-300">x</span> <span
+                                    class="font-medium px-2 py-0.5 bg-primary-50 rounded-md">{{ item.quantity }}</span>
+                            </p>
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <strong class="text-primary-700">฿{{ "%.2f"|format(item.price_at_booking * item.quantity)
+                                }}</strong>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div
+            class="bg-primary-50/30 border-t border-primary-100 px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="text-sm">
+                <p class="text-primary-800 font-bold mb-1 flex items-center gap-1"><svg class="w-4 h-4 text-primary-500"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg> ที่อยู่จัดส่ง</p>
+                <p
+                    class="text-primary-600 whitespace-pre-line bg-white px-3 py-2 rounded-lg border border-primary-100 mt-2">
+                    {{ order.address }}</p>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table mb-0">
-                        <tbody>
-                            {% for item in order.items %}
-                            <tr>
-                                <td class="ps-4" style="width: 80px;">
-                                    {% if item.product.image_url %}
-                                    <img src="{{ item.product.image_url }}" width="50" height="50" class="rounded"
-                                        style="object-fit: cover;">
-                                    {% else %}
-                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center"
-                                        style="width: 50px; height: 50px;">
-                                    </div>
-                                    {% endif %}
-                                </td>
-                                <td class="align-middle">
-                                    <h6 class="mb-0">{{ item.product.name }}</h6>
-                                    <small class="text-muted">฿{{ "%.2f"|format(item.price_at_booking) }} x {{
-                                        item.quantity }}</small>
-                                </td>
-                                <td class="align-middle text-end pe-4">
-                                    <strong>฿{{ "%.2f"|format(item.price_at_booking * item.quantity) }}</strong>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot class="table-light">
-                            <tr>
-                                <td colspan="2" class="text-end pe-4"><strong>ยอดชำระสุทธิ:</strong></td>
-                                <td class="text-end pe-4"><strong class="text-primary fs-5">฿{{
-                                        "%.2f"|format(order.total_price) }}</strong></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="px-4 py-3 bg-light border-top">
-                    <h6 class="mb-1 text-muted">📍 ที่อยู่จัดส่ง</h6>
-                    <p class="mb-0" style="white-space: pre-line;">{{ order.address }}</p>
-                </div>
+            <div class="text-right w-full md:w-auto bg-white px-5 py-3 rounded-xl border border-primary-100 shadow-sm">
+                <span class="text-primary-500 text-sm font-medium mr-3">ยอดชำระสุทธิ:</span>
+                <strong class="text-accent-600 text-xl">฿{{ "%.2f"|format(order.total_price) }}</strong>
             </div>
         </div>
-        {% endfor %}
-        {% else %}
-        <div class="text-center py-5">
-            <h4 class="text-muted">คุณยังไม่มีประวัติคำสั่งซื้อ</h4>
-            <a href="{{ url_for('index') }}"
-                class="btn btn-outline-custom mt-3 rounded-pill px-4">ไปเลือกซื้อสินค้ากันเลย</a>
-        </div>
-        {% endif %}
     </div>
+    {% endfor %}
 </div>
+{% else %}
+<div class="text-center py-20 bg-white rounded-3xl border border-primary-50 shadow-sm animate-fade-in-up">
+    <span class="text-5xl block mb-4 opacity-30 text-primary-400">📦</span>
+    <p class="text-primary-600 font-medium text-lg mb-6">คุณยังไม่มีประวัติคำสั่งซื้อ</p>
+    <a href="{{ url_for('index') }}"
+        class="inline-flex items-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-all font-medium btn-3d shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+        </svg>
+        ไปเลือกซื้อสินค้ากันเลย
+    </a>
+</div>
+{% endif %}
 {% endblock %}

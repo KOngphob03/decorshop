@@ -1,90 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header mt-4 mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-dark);">ตะกร้าสินค้า</h2>
+<div class="page-header page-header-left mt-4 mb-6 animate-fade-in-up">
+    <h2 class="text-2xl font-bold text-primary-800">ตะกร้าสินค้า</h2>
 </div>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px; overflow: hidden;">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>สินค้า</th>
-                                <th>ราคา</th>
-                                <th>จำนวน</th>
-                                <th>รวม</th>
-                                <th>จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in cart_items %}
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        {% if item.product.image_url %}
-                                        <img src="{{ item.product.image_url }}" width="60" height="60"
-                                            class="rounded me-3" style="object-fit: cover;">
-                                        {% else %}
-                                        <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center"
-                                            style="width: 60px; height: 60px;">
-                                            <span class="text-white small">ไม่มีรูป</span>
-                                        </div>
-                                        {% endif %}
-                                        <div>
-                                            <h6 class="mb-0">{{ item.product.name }}</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>฿{{ "%.2f"|format(item.product.price) }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>฿{{ "%.2f"|format(item.product.price * item.quantity) }}</td>
-                                <td>
-                                    <a href="{{ url_for('remove_from_cart', cart_item_id=item.id) }}"
-                                        class="btn btn-sm btn-outline-danger rounded-pill px-3">ลบ</a>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="5" class="text-center py-4 text-muted">อุ้ย! ตะกร้าสินค้ายังว่างเปล่า</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 animate-fade-in-up stagger-1">
+        <div class="bg-white rounded-2xl shadow-sm border border-primary-50 overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-primary-50/80 text-primary-700 text-sm border-b border-primary-100">
+                    <tr>
+                        <th class="text-left py-4 px-5 font-semibold">สินค้า</th>
+                        <th class="text-left py-4 px-5 font-semibold">ราคา</th>
+                        <th class="text-left py-4 px-5 font-semibold">จำนวน</th>
+                        <th class="text-left py-4 px-5 font-semibold">รวม</th>
+                        <th class="text-left py-4 px-5 font-semibold">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr class="border-b border-primary-50 hover:bg-primary-50/30 transition-colors">
+                        <td class="py-4 px-5">
+                            <div class="flex items-center gap-4">
+                                {% if item.product.image_url %}
+                                <img src="{{ item.product.image_url }}"
+                                    class="w-16 h-16 rounded-xl object-cover shadow-sm">
+                                {% else %}
+                                <div class="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center">
+                                    <span class="text-primary-400 text-xs">ไม่มีรูป</span>
+                                </div>
+                                {% endif %}
+                                <a href="{{ url_for('product_detail', product_id=item.product.id) }}"
+                                    class="font-bold text-primary-800 hover:text-primary-600 transition">{{
+                                    item.product.name }}</a>
+                            </div>
+                        </td>
+                        <td class="py-4 px-5 text-primary-600">฿{{ "%.2f"|format(item.product.price) }}</td>
+                        <td class="py-4 px-5 text-primary-800 font-medium">{{ item.quantity }}</td>
+                        <td class="py-4 px-5 font-bold text-accent-600">฿{{ "%.2f"|format(item.product.price *
+                            item.quantity) }}</td>
+                        <td class="py-4 px-5">
+                            <a href="{{ url_for('remove_from_cart', cart_item_id=item.id) }}"
+                                class="text-red-400 hover:text-white hover:bg-red-500 border border-red-200 px-4 py-1.5 rounded-full text-sm transition-all shadow-sm">ลบ</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-16">
+                            <span class="text-4xl block mb-3 opacity-30 text-primary-400">🛒</span>
+                            <span class="text-primary-500 font-medium">อุ้ย! ตะกร้าสินค้ายังว่างเปล่า</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <a href="{{ url_for('index') }}" class="btn btn-outline-custom mt-2">&larr; เลือกซื้อสินค้าต่อ</a>
+        <a href="{{ url_for('index') }}"
+            class="inline-flex items-center gap-2 mt-6 px-6 py-2.5 bg-primary-50 text-primary-700 rounded-full hover:bg-primary-100 transition text-sm font-medium border border-primary-200">&larr;
+            เลือกซื้อสินค้าต่อ</a>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm border-0" style="border-radius: 16px;">
-            <div class="card-body p-4">
-                <h5 class="card-title fw-bold mb-4" style="color: var(--primary-dark);">สรุปคำสั่งซื้อ</h5>
-                <div class="d-flex justify-content-between mb-3 text-muted">
-                    <span>ยอดรวมสินค้า</span>
-                    <strong>฿{{ "%.2f"|format(total_price) }}</strong>
-                </div>
-                <div class="d-flex justify-content-between mb-3 text-muted">
-                    <span>ค่าจัดส่ง</span>
-                    <span>ส่งฟรี</span>
-                </div>
-                <hr class="text-muted">
-                <div class="d-flex justify-content-between mb-4 mt-3">
-                    <span class="fs-5 fw-bold">ยอดสุทธิ</span>
-                    <strong class="fs-4 price-tag">฿{{ "%.2f"|format(total_price) }}</strong>
-                </div>
-
-                {% if cart_items %}
-                <a href="{{ url_for('checkout') }}" class="btn btn-primary-custom w-100 py-3 fs-5">ดำเนินการสั่งซื้อ</a>
-                {% else %}
-                <button class="btn btn-secondary w-100 py-3 fs-5" style="border-radius: 50px;"
-                    disabled>ตะกร้าว่างเปล่า</button>
-                {% endif %}
+    <div class="animate-fade-in-up stagger-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-primary-100 p-8 sticky top-24">
+            <h5 class="font-bold text-primary-900 text-xl mb-6">สรุปคำสั่งซื้อ</h5>
+            <div class="flex justify-between mb-4 text-primary-600">
+                <span>ยอดรวมสินค้า</span>
+                <strong class="text-primary-800">฿{{ "%.2f"|format(total_price) }}</strong>
             </div>
+            <div class="flex justify-between mb-6 text-primary-600">
+                <span>ค่าจัดส่ง</span>
+                <span class="text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded text-sm">ส่งฟรี</span>
+            </div>
+            <hr class="border-primary-100 mb-6">
+            <div class="flex justify-between mb-8">
+                <span class="text-lg font-bold text-primary-900">ยอดสุทธิ</span>
+                <strong class="text-2xl font-bold text-accent-500">฿{{ "%.2f"|format(total_price) }}</strong>
+            </div>
+
+            {% if cart_items %}
+            <a href="{{ url_for('checkout') }}"
+                class="block w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-center text-lg font-medium transition-all shadow-md hover:shadow-lg btn-3d">ดำเนินการสั่งซื้อ
+                &rarr;</a>
+            {% else %}
+            <button class="w-full py-3.5 bg-gray-100 text-gray-400 rounded-xl text-lg font-medium cursor-not-allowed"
+                disabled>ตะกร้าว่างเปล่า</button>
+            {% endif %}
         </div>
     </div>
 </div>

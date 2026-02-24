@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-6 col-lg-4">
-        <div class="card shadow-sm border-0 mt-3" style="border-radius: 16px;">
-            <div class="card-body p-4 p-md-5">
-                <div class="page-header text-center mb-4">
-                    <h3 class="fw-bold" style="color: var(--primary-dark);">เข้าสู่ระบบ</h3>
+<div class="flex justify-center mt-8 animate-fade-in-up">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-3xl shadow-md border border-primary-50 p-6 md:p-10 relative overflow-hidden">
+            <!-- Decorative circle -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-100/50 rounded-full blur-2xl"></div>
+
+            <div class="page-header text-center mb-8 relative z-10">
+                <h3 class="text-2xl font-bold text-primary-800">กลับเข้าสู่ระบบ</h3>
+                <p class="text-primary-400 mt-2 text-sm">ยินดีต้อนรับกลับมา เลือกซื้อของแต่งบ้านต่อได้เลย</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('login') }}" class="relative z-10">
+                <div class="mb-5">
+                    <label for="username" class="block text-sm font-bold text-primary-800 mb-2">ชื่อผู้ใช้</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
                 </div>
-                <form method="POST" action="{{ url_for('login') }}">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">ชื่อผู้ใช้</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">รหัสผ่าน</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary-custom w-100 py-2 fs-5 mt-3">เข้าสู่ระบบ</button>
-                </form>
-                <div class="text-center mt-3">
-                    <small>ยังไม่มีบัญชี? <a href="{{ url_for('register') }}">สมัครสมาชิก</a></small>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-bold text-primary-800 mb-2">รหัสผ่าน</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all shadow-inner">
                 </div>
+                <button type="submit"
+                    class="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-lg font-medium transition-all shadow-md hover:shadow-lg mt-2 btn-3d">
+                    เข้าสู่ระบบ
+                </button>
+            </form>
+
+            <div class="text-center mt-6 relative z-10 pt-6 border-t border-primary-100">
+                <p class="text-primary-500 text-sm">ยังไม่มีบัญชี? <a href="{{ url_for('register') }}"
+                        class="text-accent-600 font-bold hover:text-accent-700 hover:underline transition ml-1">สมัครสมาชิกที่นี่</a>
+                </p>
             </div>
         </div>
     </div>

@@ -1,98 +1,143 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header mt-4 mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-dark);">⚙️ ระบบจัดการหลังบ้าน (Admin)</h2>
+<div class="page-header page-header-left mt-4 mb-6 animate-fade-in-up">
+    <h2 class="text-2xl font-bold text-primary-800">⚙️ ระบบจัดการหลังบ้าน (Admin)</h2>
 </div>
 
-<div class="row">
-    
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0" style="border-radius: 16px; overflow: hidden;">
-            <div class="card-header text-white" style="background-color: var(--primary-dark);">
-                <h5 class="mb-0">เพิ่มสินค้าใหม่</h5>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="animate-fade-in-up stagger-1">
+        <div class="bg-white rounded-2xl shadow-sm border border-primary-50 overflow-hidden sticky top-24">
+            <div class="bg-primary-700 text-white px-6 py-4 border-b border-primary-800">
+                <h5 class="font-bold text-lg flex items-center gap-2"><svg class="w-5 h-5 text-primary-200" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg> เพิ่มสินค้าใหม่</h5>
             </div>
-            <div class="card-body">
+            <div class="p-6">
                 <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label class="form-label">ชื่อสินค้า</label>
-                        <input type="text" class="form-control" name="name" required>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-primary-800 mb-1">ชื่อสินค้า <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="name" required
+                            class="w-full border-2 border-primary-100 rounded-xl px-4 py-2.5 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">รายละเอียด</label>
-                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-primary-800 mb-1">รายละเอียด <span
+                                class="text-primary-400 font-normal">(ทางเลือก)</span></label>
+                        <textarea name="description" rows="3"
+                            class="w-full border-2 border-primary-100 rounded-xl px-4 py-2 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner"></textarea>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">ราคา (บาท)</label>
-                            <input type="number" step="0.01" class="form-control" name="price" required>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-bold text-primary-800 mb-1">ราคา (บาท) <span
+                                    class="text-red-500">*</span></label>
+                            <input type="number" step="0.01" name="price" required
+                                class="w-full border-2 border-primary-100 rounded-xl px-4 py-2.5 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner">
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">จำนวนสต๊อก</label>
-                            <input type="number" class="form-control" name="stock" value="0" required>
+                        <div>
+                            <label class="block text-sm font-bold text-primary-800 mb-1">จำนวนสต๊อก <span
+                                    class="text-red-500">*</span></label>
+                            <input type="number" name="stock" value="0" required
+                                class="w-full border-2 border-primary-100 rounded-xl px-4 py-2.5 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner">
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">รูปภาพสินค้า 1 (รูปหลัก)</label>
-                        <input type="file" class="form-control mb-2" name="image_file" accept="image/*">
-                        <label class="form-label">รูปภาพสินค้า 2 </label>
-                        <input type="file" class="form-control mb-2" name="image_file_2" accept="image/*">
-                        <label class="form-label">รูปภาพสินค้า 3 </label>
-                        <input type="file" class="form-control" name="image_file_3" accept="image/*">
+                    <div class="mb-6 space-y-3 bg-primary-50/50 p-4 rounded-xl border border-primary-100">
+                        <p class="text-sm font-bold text-primary-800 mb-2">อัปโหลดรูปภาพ</p>
+                        <div>
+                            <label class="block text-xs text-primary-600 mb-1">รูปภาพสินค้า 1 (รูปหลัก)</label>
+                            <input type="file" name="image_file" accept="image/*"
+                                class="w-full border border-primary-200 rounded-lg px-2 py-1 bg-white text-xs file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 transition-all shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-primary-600 mb-1">รูปภาพสินค้า 2 (ทางเลือก)</label>
+                            <input type="file" name="image_file_2" accept="image/*"
+                                class="w-full border border-primary-200 rounded-lg px-2 py-1 bg-white text-xs file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 transition-all shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-primary-600 mb-1">รูปภาพสินค้า 3 (ทางเลือก)</label>
+                            <input type="file" name="image_file_3" accept="image/*"
+                                class="w-full border border-primary-200 rounded-lg px-2 py-1 bg-white text-xs file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 transition-all shadow-sm">
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary-custom w-100 mt-2">บันทึกสินค้า</button>
+                    <button type="submit"
+                        class="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium transition-all shadow-md hover:shadow-lg text-sm btn-3d">
+                        บันทึกสินค้าลงระบบ
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
-    
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0" style="border-radius: 16px; overflow: hidden;">
-            <div class="card-header bg-white">
-                <h5 class="mb-0">รายการสินค้าทั้งหมด</h5>
+    <div class="lg:col-span-2 animate-fade-in-up stagger-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-primary-50 overflow-hidden">
+            <div class="px-6 py-5 bg-primary-50/80 border-b border-primary-100 flex justify-between items-center">
+                <h5 class="font-bold text-primary-800 text-lg">รายการสินค้าทั้งหมด</h5>
+                <span class="bg-primary-100 text-primary-700 text-xs font-bold px-3 py-1 rounded-full">{{
+                    products|length }} รายการ</span>
             </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>รหัส</th>
-                                <th>รูป/ชื่อสินค้า</th>
-                                <th>สต๊อก</th>
-                                <th>ราคา</th>
-                                <th>จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for product in products %}
-                            <tr>
-                                <td>{{ product.id }}</td>
-                                <td>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-primary-50 text-primary-700 text-sm border-b border-primary-100">
+                        <tr>
+                            <th class="text-left py-4 px-5 font-semibold">รหัส</th>
+                            <th class="text-left py-4 px-5 font-semibold">รูป/ชื่อสินค้า</th>
+                            <th class="text-left py-4 px-5 font-semibold">สต๊อก</th>
+                            <th class="text-left py-4 px-5 font-semibold">ราคา</th>
+                            <th class="text-left py-4 px-5 font-semibold">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr class="border-b border-primary-50 hover:bg-primary-50/30 transition-colors">
+                            <td class="py-4 px-5 text-primary-500 font-medium">#{{ product.id }}</td>
+                            <td class="py-4 px-5">
+                                <div class="flex items-center gap-3">
                                     {% if product.image_url %}
-                                    <img src="{{ product.image_url }}" width="40" height="40" class="rounded me-2"
-                                        style="object-fit: cover;">
+                                    <img src="{{ product.image_url }}"
+                                        class="w-12 h-12 rounded-lg object-cover shadow-sm">
+                                    {% else %}
+                                    <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                                        <span
+                                            class="text-primary-400 text-xs text-center leading-tight">ไม่มี<br>รูป</span>
+                                    </div>
                                     {% endif %}
-                                    {{ product.name }}
-                                </td>
-                                <td>{{ product.stock }}</td>
-                                <td>฿{{ "%.2f"|format(product.price) }}</td>
-                                <td>
+                                    <span class="font-bold text-primary-900">{{ product.name }}</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-5">
+                                {% if product.stock > 10 %}
+                                <span class="bg-green-50 text-green-600 px-2 py-0.5 rounded text-sm font-medium">{{
+                                    product.stock }}</span>
+                                {% elif product.stock > 0 %}
+                                <span class="bg-yellow-50 text-yellow-600 px-2 py-0.5 rounded text-sm font-medium">{{
+                                    product.stock }}</span>
+                                {% else %}
+                                <span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-sm font-medium">หมด</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-5 font-medium text-primary-700">฿{{ "%.2f"|format(product.price) }}</td>
+                            <td class="py-4 px-5">
+                                <div class="flex gap-2">
                                     <a href="{{ url_for('edit_product', product_id=product.id) }}"
-                                        class="btn btn-sm btn-outline-primary">แก้ไข</a>
+                                        class="px-4 py-1.5 border border-primary-500 text-primary-600 bg-primary-50 rounded-full text-xs hover:bg-primary-600 hover:text-white font-medium transition-all shadow-sm">แก้ไข</a>
                                     <a href="{{ url_for('delete_product', product_id=product.id) }}"
-                                        class="btn btn-sm btn-danger"
-                                        onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสินค้านี้?');">ลบ</a>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="5" class="text-center py-3">ยังไม่มีสินค้าในระบบ</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                        onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสินค้านี้? ข้อมูลจะไม่สามารถกู้คืนได้');"
+                                        class="px-4 py-1.5 bg-red-50 text-red-600 border border-red-200 rounded-full text-xs hover:bg-red-500 hover:text-white font-medium transition-all shadow-sm">ลบ</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-16">
+                                <span class="text-4xl block mb-3 opacity-30 text-primary-400">📦</span>
+                                <span class="text-primary-500 font-medium">ยังไม่มีสินค้าในระบบ</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

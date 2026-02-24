@@ -1,53 +1,64 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header text-center mt-4 mb-4">
-    <h2 class="fw-bold" style="color: var(--primary-dark);">แจ้งชำระเงิน</h2>
+<div class="page-header text-center mt-4 mb-8 animate-fade-in-up">
+    <h2 class="text-2xl font-bold text-primary-800">แจ้งชำระเงิน</h2>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-        <div class="card shadow-sm border-0" style="border-radius: 16px;">
-            <div class="card-body p-4 p-md-5">
-                <div class="text-center mb-4">
-                    <h5 class="mb-3 text-muted">ยอดรวมที่ต้องชำระ</h5>
-                    <h2 class="price-tag display-6 fw-bold">฿{{ "%.2f"|format(total_price) }}</h2>
-                </div>
+<div class="max-w-lg mx-auto animate-fade-in-up stagger-1">
+    <div class="bg-white rounded-3xl shadow-md border border-primary-50 p-6 md:p-10">
+        <div class="text-center mb-8">
+            <p class="text-primary-500 mb-1 font-medium">ยอดรวมที่ต้องชำระ</p>
+            <p class="text-4xl font-bold text-accent-500 drop-shadow-sm">฿{{ "%.2f"|format(total_price) }}</p>
+        </div>
 
-                <div class="alert text-center mb-5"
-                    style="background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px;">
-                    <h5 class="mb-3 fw-bold" style="color: var(--primary-dark);">สแกน QR Code เพื่อชำระเงิน</h5>
-                    
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MockPayment-{{ total_price }}"
-                        alt="QR Code" class="img-fluid mb-3 rounded" style="width: 150px; height: 150px;">
-                    <p class="mb-1"><strong>ธนาคาร:</strong> กสิกรไทย (KBank)</p>
-                    <p class="mb-1"><strong>ชื่อบัญชี:</strong> บจก. DecorShop</p>
-                    <p class="mb-0"><strong>เลขที่บัญชี:</strong> 123-4-56789-0</p>
-                </div>
-
-                <form method="POST" action="{{ url_for('checkout') }}" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="address" class="form-label">ที่อยู่สำหรับจัดส่งสินค้า <span
-                                class="text-danger">*</span></label>
-                        <textarea class="form-control" id="address" name="address" rows="3" required
-                            placeholder="กรุณากรอกที่อยู่ให้ชัดเจน...">{{ current_user.address or '' }}</textarea>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="payment_slip_file" class="form-label">อัปโหลดสลิปโอนเงิน <span
-                                class="text-danger">*</span></label>
-                        <input type="file" class="form-control" id="payment_slip_file" name="payment_slip_file"
-                            accept="image/*" required>
-                        <div class="form-text">รองรับไฟล์สลิป .jpg, .png</div>
-                    </div>
-
-                    <button type="submit"
-                        class="btn btn-primary-custom w-100 py-3 fs-5 mb-3">ยืนยันการแจ้งโอนเงิน</button>
-                    <a href="{{ url_for('view_cart') }}"
-                        class="btn btn-outline-custom w-100 py-2">กลับไปตะกร้าสินค้า</a>
-                </form>
+        <div class="bg-primary-50/50 border-2 border-primary-100 rounded-2xl p-6 text-center mb-8 shadow-inner">
+            <h5 class="font-bold text-primary-800 mb-4 text-lg">สแกน QR Code เพื่อชำระเงิน</h5>
+            <div class="bg-white p-3 rounded-2xl inline-block shadow-sm mb-4">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MockPayment-{{ total_price }}"
+                    alt="QR Code" class="rounded-lg w-36 h-36">
+            </div>
+            <div
+                class="space-y-1.5 bg-white py-3 px-4 rounded-xl border border-primary-100 inline-block text-left mx-auto">
+                <p class="text-sm text-primary-700"><strong>ธนาคาร:</strong> กสิกรไทย (KBank)</p>
+                <p class="text-sm text-primary-700"><strong>ชื่อบัญชี:</strong> บจก. DecorShop</p>
+                <p class="text-sm text-primary-700"><strong>เลขที่บัญชี:</strong> 123-4-56789-0</p>
             </div>
         </div>
+
+        <form method="POST" action="{{ url_for('checkout') }}" enctype="multipart/form-data">
+            <div class="mb-5">
+                <label for="address" class="block text-sm font-bold text-primary-800 mb-2">ที่อยู่สำหรับจัดส่งสินค้า
+                    <span class="text-red-500">*</span></label>
+                <textarea id="address" name="address" rows="3" required placeholder="กรุณากรอกที่อยู่ให้ชัดเจน..."
+                    class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 focus:bg-white transition-all text-sm shadow-inner">{{ current_user.address or '' }}</textarea>
+            </div>
+
+            <div class="mb-8">
+                <label for="payment_slip_file" class="block text-sm font-bold text-primary-800 mb-2">อัปโหลดสลิปโอนเงิน
+                    <span class="text-red-500">*</span></label>
+                <input type="file" id="payment_slip_file" name="payment_slip_file" accept="image/*" required
+                    class="w-full border-2 border-primary-100 rounded-xl px-4 py-3 bg-primary-50/30 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:bg-white transition-all shadow-inner file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 hover:file:shadow-md file:transition-all cursor-pointer">
+                <p class="text-xs text-primary-400 mt-2 flex items-center gap-1"><svg class="w-3 h-3" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg> รองรับไฟล์สลิป .jpg, .png</p>
+            </div>
+
+            <button type="submit"
+                class="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-lg font-medium transition-all shadow-md hover:shadow-lg mb-4 btn-3d flex justify-center items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                ยืนยันการแจ้งโอนเงิน
+            </button>
+            <a href="{{ url_for('view_cart') }}"
+                class="block w-full py-3 border border-primary-200 text-primary-600 bg-primary-50 rounded-xl text-center hover:bg-primary-100 transition-all text-sm font-medium">
+                กลับไปตะกร้าสินค้า
+            </a>
+        </form>
     </div>
 </div>
 {% endblock %}
