@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 mt-3" style="border-radius: 16px;">
+            <div class="card-body p-4 p-md-5">
+                <div class="page-header text-center mb-4">
+                    <h3 class="fw-bold" style="color: var(--primary-dark);">สมัครสมาชิก</h3>
+                </div>
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">ชื่อผู้ใช้</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">รหัสผ่าน</label>
+                        <input type="password" class="form-control" id="password" name="password" required
+                            minlength="6">
+                        <div class="form-text">รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2 fs-5 mt-3">ลงทะเบียน</button>
+                </form>
+                <div class="text-center mt-3">
+                    <small>มีบัญชีอยู่แล้ว? <a href="{{ url_for('login') }}">เข้าสู่ระบบ</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

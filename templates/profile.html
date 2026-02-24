@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8 col-lg-6 mt-4">
+        <div class="page-header text-center mb-5">
+            <h2 class="fw-bold" style="color: var(--primary-dark);">ข้อมูลโปรไฟล์ส่วนตัว</h2>
+        </div>
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
+
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            {% if current_user.profile_image %}
+                            <img src="{{ current_user.profile_image }}" alt="Profile Image"
+                                class="rounded-circle object-fit-cover shadow-sm border"
+                                style="width: 150px; height: 150px;">
+                            {% else %}
+                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center shadow-sm text-white fs-1 border"
+                                style="width: 150px; height: 150px;">
+                                👤
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4 text-center">
+                        <label for="profile_image" class="form-label text-muted d-block">เปลี่ยนรูปโปรไฟล์</label>
+                        <input class="form-control form-control-sm mx-auto" type="file" id="profile_image"
+                            name="profile_image" accept="image/*" style="max-width: 300px;">
+                    </div>
+
+                    <hr class="my-4 text-muted">
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">ชื่อผู้ใช้งาน (Username)</label>
+                        <input type="text" class="form-control bg-light" value="{{ current_user.username }}" disabled>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="first_name" class="form-label">ชื่อจริง</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                placeholder="กรอกชื่อจริง" value="{{ current_user.first_name or '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last_name" class="form-label">นามสกุล</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                placeholder="กรอกนามสกุล" value="{{ current_user.last_name or '' }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="เช่น 0812345678"
+                            value="{{ current_user.phone or '' }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">ที่อยู่สำหรับจัดส่งเริ่มต้น</label>
+                        <textarea class="form-control" id="address" name="address" rows="3"
+                            placeholder="ระบุที่อยู่ เพื่อใช้ในการสั่งซื้อครั้งถัดไปให้อัตโนมัติ...">{{ current_user.address or '' }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="new_password" class="form-label">เปลี่ยนรหัสผ่านใหม่ <span
+                                class="text-muted fs-6 mb-0">(ปล่อยอ้างไว้หากไม่ต้องการเปลี่ยน)</span></label>
+                        <input type="password" class="form-control" id="new_password" name="new_password"
+                            placeholder="รหัสผ่านใหม่">
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-primary-custom w-100 py-3 fs-5 mt-3 shadow-sm">บันทึกการเปลี่ยนแปลง</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

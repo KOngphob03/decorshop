@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}"
+                    class="text-decoration-none text-muted">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header text-start mt-0 mb-4"></div>
+
+<div class="row align-items-center mt-4">
+    <!-- Product Image Carousel -->
+    <div class="col-md-6 mb-4">
+        <div id="productCarousel" class="carousel slide product-carousel" data-bs-ride="carousel">
+            <div class="carousel-inner border-0">
+                {% if product.image_url %}
+                <div class="carousel-item active">
+                    <img src="{{ product.image_url }}" class="d-block w-100" alt="{{ product.name }}"
+                        style="object-fit: cover; height: 500px;">
+                </div>
+                {% endif %}
+                {% if product.image_url_2 %}
+                <div class="carousel-item {% if not product.image_url %}active{% endif %}">
+                    <img src="{{ product.image_url_2 }}" class="d-block w-100" alt="{{ product.name }}"
+                        style="object-fit: cover; height: 500px;">
+                </div>
+                {% endif %}
+                {% if product.image_url_3 %}
+                <div class="carousel-item {% if not product.image_url and not product.image_url_2 %}active{% endif %}">
+                    <img src="{{ product.image_url_3 }}" class="d-block w-100" alt="{{ product.name }}"
+                        style="object-fit: cover; height: 500px;">
+                </div>
+                {% endif %}
+                {% if not product.image_url and not product.image_url_2 and not product.image_url_3 %}
+                <div class="carousel-item active bg-light d-flex align-items-center justify-content-center"
+                    style="height: 500px;">
+                    <span class="text-muted fs-4">ไม่มีรูปภาพ</span>
+                </div>
+                {% endif %}
+            </div>
+            {% if product.image_url_2 or product.image_url_3 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon p-3" aria-hidden="true"
+                    style="background-color: rgba(0,0,0,0.3); border-radius: 50%;"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon p-3" aria-hidden="true"
+                    style="background-color: rgba(0,0,0,0.3); border-radius: 50%;"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            {% endif %}
+        </div>
+
+        <!-- Thumbnail Indicators (Optional but nice) -->
+        <div class="d-flex justify-content-center mt-3 gap-2">
+            {% if product.image_url %}
+            <img src="{{ product.image_url }}" class="img-thumbnail"
+                style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" data-bs-target="#productCarousel"
+                data-bs-slide-to="0" aria-current="true">
+            {% endif %}
+            {% if product.image_url_2 %}
+            <img src="{{ product.image_url_2 }}" class="img-thumbnail"
+                style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" data-bs-target="#productCarousel"
+                data-bs-slide-to="{% if product.image_url %}1{% else %}0{% endif %}">
+            {% endif %}
+            {% if product.image_url_3 %}
+            <img src="{{ product.image_url_3 }}" class="img-thumbnail"
+                style="height: 60px; width: 60px; object-fit: cover; cursor: pointer;" data-bs-target="#productCarousel"
+                data-bs-slide-to="{% if product.image_url and product.image_url_2 %}2{% elif product.image_url or product.image_url_2 %}1{% else %}0{% endif %}">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-md-6 ps-md-5">
+        <h1 class="fw-bold mb-3 display-5" style="color: var(--text-main);">{{ product.name }}</h1>
+
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="price-tag mb-0 me-4 fs-2">฿{{ "%.2f"|format(product.price) }}</h2>
+            {% if product.stock > 0 %}
+            <span class="badge bg-white border border-secondary text-dark rounded-pill px-3 py-2 fs-6 shadow-sm">
+                มีสินค้า (เหลือ {{ product.stock }} ชิ้น)
+            </span>
+            {% else %}
+            <span class="badge bg-danger rounded-pill px-3 py-2 fs-6 shadow-sm">
+                สินค้าหมด
+            </span>
+            {% endif %}
+        </div>
+
+        <p class="lead text-muted mb-4 pb-3 border-bottom" style="line-height: 1.8;">
+            {{ product.description }}
+        </p>
+
+        <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="mt-4">
+            {% if product.stock > 0 %}
+            <div class="d-flex align-items-center mb-4">
+                <label for="quantity" class="form-label me-3 fw-bold mb-0 fs-5">จำนวน:</label>
+                <input type="number" id="quantity" name="quantity" class="form-control text-center fs-5" value="1"
+                    min="1" max="{{ product.stock }}" style="width: 100px;">
+            </div>
+            {% endif %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                {% if product.stock > 0 %}
+                <button type="submit"
+                    class="btn btn-primary-custom btn-lg px-5 py-3 d-flex align-items-center justify-content-center">
+                    <span class="me-2 fs-5">🛒</span> เพิ่มสินค้าลงตะกร้า
+                </button>
+                {% else %}
+                <button type="button"
+                    class="btn btn-secondary btn-lg px-5 py-3 d-flex align-items-center justify-content-center"
+                    style="border-radius: 50px;" disabled>
+                    สินค้าหมดชั่วคราว
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

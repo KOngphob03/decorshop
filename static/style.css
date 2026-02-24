@@ -1,0 +1,195 @@
+:root {
+    --primary-color: #8D6E63; 
+    --primary-dark: #5D4037;
+    --primary-light: #D7CCC8;
+    --accent-color: #A1887F;
+    --bg-color: #FAFAFA; 
+    --card-bg: #FFFFFF;
+    --text-main: #3E2723; 
+    --text-muted: #795548;
+    --border-color: #EFEBE9;
+}
+
+body {
+    font-family: 'Prompt', 'Kanit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; /* Pushes footer to the bottom */
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+
+.navbar-custom {
+    background-color: var(--card-bg) !important;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.navbar-custom .navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--primary-dark) !important;
+    letter-spacing: 1px;
+}
+.navbar-custom .nav-link {
+    color: var(--text-muted) !important;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+}
+.navbar-custom .nav-link:hover, 
+.navbar-custom .nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+
+.nav-profile-badge {
+    background-color: var(--primary-light);
+    color: var(--primary-dark) !important;
+    transition: all 0.3s ease;
+}
+.nav-profile-badge:hover {
+    background-color: var(--accent-color);
+    color: #fff !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+.btn-primary-custom:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(141, 110, 99, 0.4);
+}
+
+.btn-outline-custom {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+.btn-outline-custom:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-dark-modern {
+    background-color: var(--text-main);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+.btn-dark-modern:hover {
+    background-color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+
+.product-card {
+    border: none;
+    border-radius: 16px;
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+    height: 100%;
+}
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+.product-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+.product-card .card-body {
+    padding: 1.5rem;
+}
+.product-card .price-tag {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    background-color: #F8F9FA;
+    transition: all 0.3s ease;
+}
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.2);
+    border-color: var(--primary-color);
+    background-color: #fff;
+}
+
+
+.footer-custom {
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    color: var(--text-muted);
+}
+
+
+.badge-stock {
+    font-weight: 500;
+    padding: 0.5em 1em;
+    border-radius: 50px;
+}
+
+
+.product-carousel {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+
+.page-header {
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+.page-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 1rem auto 0;
+    border-radius: 2px;
+}
+.page-header.text-start::after {
+    margin: 1rem 0 0;
+}

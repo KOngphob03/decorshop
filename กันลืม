@@ -1,0 +1,30 @@
+Python (เวอร์ชัน 3.10 ขึ้นไป) 
+
+ก๊อปทั้งโฟลเดอร์ decorshop ส่งไป ไม่ต้องส่งโฟลเดอร์ venv/ 
+decorshop/
+├── app.py
+├── requirements.txt
+├── static/
+└── templates/
+
+# 1. เปิด XAMPP 
+
+# 2. เอาฐานข้อมูลเข้า phpMyAdmin
+
+# 3. เข้าโฟลเดอร์โปรเจกต์
+cd d:\python\decorshop 
+
+# 4. สร้าง Virtual Environment
+python -m venv venv
+
+# 5. เปิดใช้งาน venv
+venv\Scripts\activate
+
+# 6. ติดตั้งไลบรารีทั้งหมดที่ใส่ไว้ใน requirements.txt
+pip install -r requirements.txt
+
+# 7. รัน
+python app.py
+
+admin
+admin123

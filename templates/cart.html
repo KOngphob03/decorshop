@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header mt-4 mb-4">
+    <h2 class="fw-bold" style="color: var(--primary-dark);">ตะกร้าสินค้า</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 mb-4" style="border-radius: 16px; overflow: hidden;">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>สินค้า</th>
+                                <th>ราคา</th>
+                                <th>จำนวน</th>
+                                <th>รวม</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if item.product.image_url %}
+                                        <img src="{{ item.product.image_url }}" width="60" height="60"
+                                            class="rounded me-3" style="object-fit: cover;">
+                                        {% else %}
+                                        <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center"
+                                            style="width: 60px; height: 60px;">
+                                            <span class="text-white small">ไม่มีรูป</span>
+                                        </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0">{{ item.product.name }}</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>฿{{ "%.2f"|format(item.product.price) }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>฿{{ "%.2f"|format(item.product.price * item.quantity) }}</td>
+                                <td>
+                                    <a href="{{ url_for('remove_from_cart', cart_item_id=item.id) }}"
+                                        class="btn btn-sm btn-outline-danger rounded-pill px-3">ลบ</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">อุ้ย! ตะกร้าสินค้ายังว่างเปล่า</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-custom mt-2">&larr; เลือกซื้อสินค้าต่อ</a>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-4" style="color: var(--primary-dark);">สรุปคำสั่งซื้อ</h5>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span>ยอดรวมสินค้า</span>
+                    <strong>฿{{ "%.2f"|format(total_price) }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span>ค่าจัดส่ง</span>
+                    <span>ส่งฟรี</span>
+                </div>
+                <hr class="text-muted">
+                <div class="d-flex justify-content-between mb-4 mt-3">
+                    <span class="fs-5 fw-bold">ยอดสุทธิ</span>
+                    <strong class="fs-4 price-tag">฿{{ "%.2f"|format(total_price) }}</strong>
+                </div>
+
+                {% if cart_items %}
+                <a href="{{ url_for('checkout') }}" class="btn btn-primary-custom w-100 py-3 fs-5">ดำเนินการสั่งซื้อ</a>
+                {% else %}
+                <button class="btn btn-secondary w-100 py-3 fs-5" style="border-radius: 50px;"
+                    disabled>ตะกร้าว่างเปล่า</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

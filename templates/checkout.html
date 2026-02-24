@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header text-center mt-4 mb-4">
+    <h2 class="fw-bold" style="color: var(--primary-dark);">แจ้งชำระเงิน</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0" style="border-radius: 16px;">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h5 class="mb-3 text-muted">ยอดรวมที่ต้องชำระ</h5>
+                    <h2 class="price-tag display-6 fw-bold">฿{{ "%.2f"|format(total_price) }}</h2>
+                </div>
+
+                <div class="alert text-center mb-5"
+                    style="background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px;">
+                    <h5 class="mb-3 fw-bold" style="color: var(--primary-dark);">สแกน QR Code เพื่อชำระเงิน</h5>
+                    
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MockPayment-{{ total_price }}"
+                        alt="QR Code" class="img-fluid mb-3 rounded" style="width: 150px; height: 150px;">
+                    <p class="mb-1"><strong>ธนาคาร:</strong> กสิกรไทย (KBank)</p>
+                    <p class="mb-1"><strong>ชื่อบัญชี:</strong> บจก. DecorShop</p>
+                    <p class="mb-0"><strong>เลขที่บัญชี:</strong> 123-4-56789-0</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('checkout') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="address" class="form-label">ที่อยู่สำหรับจัดส่งสินค้า <span
+                                class="text-danger">*</span></label>
+                        <textarea class="form-control" id="address" name="address" rows="3" required
+                            placeholder="กรุณากรอกที่อยู่ให้ชัดเจน...">{{ current_user.address or '' }}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="payment_slip_file" class="form-label">อัปโหลดสลิปโอนเงิน <span
+                                class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="payment_slip_file" name="payment_slip_file"
+                            accept="image/*" required>
+                        <div class="form-text">รองรับไฟล์สลิป .jpg, .png</div>
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-primary-custom w-100 py-3 fs-5 mb-3">ยืนยันการแจ้งโอนเงิน</button>
+                    <a href="{{ url_for('view_cart') }}"
+                        class="btn btn-outline-custom w-100 py-2">กลับไปตะกร้าสินค้า</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

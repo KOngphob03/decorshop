@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4 align-items-center mt-4">
+    <div class="col d-flex justify-content-between align-items-center page-header mb-0 mt-0">
+        <h2 class="fw-bold m-0" style="color: var(--primary-dark);">📦 จัดการคำสั่งซื้อ (Admin)</h2>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-custom rounded-pill">กลับไปจัดการสินค้า</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-0" style="border-radius: 16px; overflow: hidden;">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>รหัสบิล</th>
+                                <th>วันที่สั่งซื้อ</th>
+                                <th>ลูกค้า (ID)</th>
+                                <th>ยอดสุทธิ</th>
+                                <th>ที่อยู่จัดส่ง</th>
+                                <th>หลักฐานโอนเงิน</th>
+                                <th>สถานะปัจจุบัน</th>
+                                <th>อัปเดตสถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>#{{ order.id }}</td>
+                                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ order.user.username }} ({{ order.user_id }})</td>
+                                <td>฿{{ "%.2f"|format(order.total_price) }}</td>
+                                <td style="max-width: 200px; white-space: pre-wrap; font-size: 0.9em;">{{ order.address
+                                    }}</td>
+                                <td>
+                                    {% if order.payment_slip %}
+                                    <a href="{{ order.payment_slip }}" target="_blank"
+                                        class="btn btn-sm btn-info text-white">ดูสลิป</a>
+                                    {% else %}
+                                    <span class="text-muted small">ไม่ระบุ</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% set status_color = 'secondary' %}
+                                    {% if order.status == 'เตรียมสินค้า' %}{% set status_color = 'warning text-dark'
+                                    %}{% endif %}
+                                    {% if order.status == 'ขนส่งเข้ารับ' %}{% set status_color = 'info text-dark' %}{%
+                                    endif %}
+                                    {% if order.status == 'ระหว่างส่ง' %}{% set status_color = 'primary' %}{% endif %}
+                                    {% if order.status == 'จัดส่งสำเร็จ' %}{% set status_color = 'success' %}{% endif %}
+                                    <span class="badge bg-{{ status_color }}">{{ order.status }}</span>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('update_order_status', order_id=order.id) }}"
+                                        class="d-flex">
+                                        <select name="status" class="form-select form-select-sm me-2"
+                                            style="width: 130px;">
+                                            <option value="เตรียมสินค้า" {% if order.status=='เตรียมสินค้า' %}selected{%
+                                                endif %}>เตรียมสินค้า</option>
+                                            <option value="ขนส่งเข้ารับ" {% if order.status=='ขนส่งเข้ารับ' %}selected{%
+                                                endif %}>ขนส่งเข้ารับ</option>
+                                            <option value="ระหว่างส่ง" {% if order.status=='ระหว่างส่ง' %}selected{%
+                                                endif %}>ระหว่างส่ง</option>
+                                            <option value="จัดส่งสำเร็จ" {% if order.status=='จัดส่งสำเร็จ' %}selected{%
+                                                endif %}>จัดส่งสำเร็จ</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-outline-custom">อัปเดต</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">ยังไม่มีคำสั่งซื้อในระบบ</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
