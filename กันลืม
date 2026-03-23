@@ -28,3 +28,16 @@ python app.py
 
 admin
 admin123
+
+sql
+ลูกค้าเลือกสินค้า
+    → บันทึกลง cart_item (user_id + product_id + quantity)
+
+ลูกค้ากด Checkout
+    → สร้าง 1 แถวใน order (ยอดรวม, ที่อยู่)
+    → คัดลอกทุก cart_item ไปเป็น order_item (พร้อม price_at_booking)
+    → หัก stock ใน product
+    → ลบ cart_item ทิ้ง
+
+Admin อัปเดตสถานะ
+    → แก้ order.status เป็น "ระหว่างส่ง" / "จัดส่งสำเร็จ"

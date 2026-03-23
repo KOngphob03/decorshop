@@ -1,93 +1,77 @@
 {% extends 'base.html' %}
 
+{% block hero %}
+<!-- ── Full-Width Hero ── -->
+<section class="hero-section animate-fade-in-up">
+    <img
+        src="https://images.unsplash.com/photo-1597696929736-6d13bed8e6a8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="DecorShop — งานคราฟต์และเครื่องปั้นดินเผา">
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+        <h1 class="hero-title">งานคราฟต์.<br>เครื่องปั้น<br>ดินเผา.</h1>
+        <p class="hero-subtitle stagger-1 animate-fade-in-up">
+            ยกระดับบ้านของคุณด้วยของตกแต่งสไตล์มินิมอล<br>
+            คัดสรรอย่างตั้งใจเพื่อมุมโปรดของคุณ
+        </p>
+        <a href="#products" class="hero-btn stagger-2 animate-fade-in-up">ดูสินค้าทั้งหมด</a>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
-<!-- แบนเนอร์อลังการ -->
-<div class="relative w-full h-[400px] mb-12 rounded-3xl overflow-hidden shadow-md group">
-    <div class="absolute inset-0 bg-primary-800">
-        <!-- ภาพพื้นหลังจะเพิ่ม transition ซูมเข้าช้าๆ -->
-        <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?q=80&w=2070&auto=format&fit=crop"
-            class="w-full h-full object-cover opacity-60 mix-blend-overlay group-hover:scale-105 transition-transform duration-[10s] ease-out">
+<div id="products">
+
+    <!-- Section Header -->
+    <div class="mb-0 animate-fade-in-up stagger-1">
+        <span class="section-label">Collection</span>
+        <h2 class="section-title">สินค้าแนะนำ</h2>
+        <hr class="section-rule">
     </div>
-    <div
-        class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-gradient-to-t from-primary-900/80 to-transparent">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in-up">งานคราฟต์ & เครื่องปั้นดินเผา</h1>
-        <p class="text-primary-100 md:text-lg max-w-2xl animate-fade-in-up stagger-1">
-            ยกระดับบ้านของคุณด้วยของตกแต่งสไตล์มินิมอลและงานทำมือสุดประณีต คัดสรรอย่างตั้งใจเพื่อมุมโปรดของคุณ</p>
-    </div>
-</div>
 
-<div class="flex items-center justify-between mb-6 animate-fade-in-up stagger-2">
-    <h2 class="text-2xl font-bold text-primary-800 flex items-center gap-2">
-        <span class="w-2 h-8 bg-accent-500 rounded-full inline-block"></span>
-        สินค้าแนะนำ
-    </h2>
-</div>
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        {% for product in products %}
+        <div class="product-card animate-fade-in-up" style="animation-delay: {{ loop.index0 * 0.08 + 0.1 }}s;">
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {% for product in products %}
-    <div class="product-card bg-white rounded-2xl shadow-sm overflow-hidden animate-fade-in-up"
-        style="animation-delay: {{ loop.index0 * 0.1 + 0.3 }}s;">
-        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="block relative img-wrapper">
-            {% if product.image_url %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-72 object-cover">
-            {% else %}
-            <div class="w-full h-72 bg-primary-100 flex items-center justify-content-center">
-                <span class="text-primary-400 mx-auto">ไม่มีรูปภาพ</span>
-            </div>
-            {% endif %}
-
-            {% if product.stock > 0 %}
-            <span
-                class="absolute top-3 right-3 bg-white/90 backdrop-blur text-primary-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm border border-white/50">
-                เหลือ {{ product.stock }}
-            </span>
-            {% else %}
-            <span
-                class="absolute top-3 right-3 bg-red-500/90 backdrop-blur text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm">
-                หมดชั่วคราว
-            </span>
-            {% endif %}
-
-            <!-- ป้ายราคาแบบ Overlay (Hover Effect) -->
-            <div
-                class="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow-sm border border-white/50 text-accent-600 font-bold text-lg">
-                ฿{{ "%.2f"|format(product.price) }}
-            </div>
-        </a>
-
-        <div class="p-6">
-            <a href="{{ url_for('product_detail', product_id=product.id) }}"
-                class="block group-hover:text-primary-600 transition">
-                <h5 class="font-bold text-primary-900 text-lg truncate mb-2">{{ product.name }}</h5>
-            </a>
-            <p class="text-primary-500 text-sm mb-5 line-clamp-2">{{ product.description }}</p>
-
-            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
-                {% if product.stock > 0 %}
-                <button type="submit"
-                    class="w-full py-3 bg-primary-50 text-primary-700 border border-primary-200 rounded-xl hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all font-medium text-sm flex justify-center items-center gap-2 btn-3d">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                    </svg>
-                    เพิ่มลงตะกร้า
-                </button>
+            <!-- Image -->
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" class="img-wrapper">
+                {% if product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-72 object-cover">
                 {% else %}
-                <button type="button"
-                    class="w-full py-3 bg-gray-100 text-gray-400 rounded-xl cursor-not-allowed text-sm flex justify-center items-center gap-2"
-                    disabled>
-                    สินค้าหมดชั่วคราว
-                </button>
+                <div class="w-full h-72 bg-primary-100 flex items-center justify-center">
+                    <span class="text-primary-300 text-sm tracking-widest uppercase">No Image</span>
+                </div>
                 {% endif %}
-            </form>
+
+                {% if product.stock <= 0 %}
+                <span class="stock-badge stock-badge-out">หมดชั่วคราว</span>
+                {% endif %}
+            </a>
+
+            <!-- Info -->
+            <div class="card-body">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" class="card-name">{{ product.name }}</a>
+                <p class="card-price">฿{{ "%.2f"|format(product.price) }}</p>
+                <p class="card-desc">{{ product.description }}</p>
+
+                <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}">
+                    <input type="hidden" name="quantity" value="1">
+                    {% if product.stock > 0 %}
+                    <button type="submit" class="luxury-btn">เพิ่มลงตะกร้า</button>
+                    {% else %}
+                    <button type="button" class="luxury-btn" disabled>สินค้าหมดชั่วคราว</button>
+                    {% endif %}
+                </form>
+            </div>
         </div>
+
+        {% else %}
+        <div class="col-span-full text-center py-20 border border-primary-200 animate-fade-in-up">
+            <p class="font-serif text-2xl italic text-primary-300 mb-2">ยังไม่มีสินค้า</p>
+            <p class="text-xs tracking-widest text-primary-300 uppercase">No products available</p>
+        </div>
+        {% endfor %}
     </div>
-    {% else %}
-    <div
-        class="col-span-full text-center py-16 bg-white rounded-3xl border border-primary-100 shadow-sm animate-fade-in-up">
-        <span class="text-4xl block mb-3 opacity-50">🪴</span>
-        <p class="text-primary-500 text-lg">ยังไม่มีสินค้าในขณะนี้</p>
-    </div>
-    {% endfor %}
+
 </div>
 {% endblock %}

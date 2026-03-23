@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Prompt:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,25 +19,26 @@
                 extend: {
                     colors: {
                         primary: {
-                            50: '#F4F7F5',
-                            100: '#E4ECE5',
-                            200: '#C7D7CA',
-                            300: '#A1BEA6',
-                            400: '#7AA082',
-                            500: '#5C8465',
-                            600: '#4A6A51', /* Sage Green หลัก */
-                            700: '#3D5542',
-                            800: '#324537',
-                            900: '#2A392E',
+                            50:  '#FAFAF8',
+                            100: '#F2F0EB',
+                            200: '#E5E2DA',
+                            300: '#C8C4B8',
+                            400: '#9E9A90',
+                            500: '#6B6760',
+                            600: '#4A473F',
+                            700: '#2E2C26',
+                            800: '#1C1B17',
+                            900: '#0F0E0C',
                         },
                         accent: {
-                            400: '#E6C25B',
-                            500: '#D4AF37', /* Gold/Terracotta */
-                            600: '#B5952F',
+                            400: '#9DAF9A',
+                            500: '#7A9476',
+                            600: '#5C7559',
                         }
                     },
                     fontFamily: {
-                        thai: ['Prompt', 'Kanit', 'sans-serif'],
+                        thai: ['DM Sans', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
                     }
                 }
             }
@@ -46,111 +47,89 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 </head>
 
-<body class="font-thai bg-primary-50 text-primary-900 flex flex-col min-h-full">
+<body class="font-thai bg-primary-50 text-primary-800 flex flex-col min-h-full">
 
-    <nav
-        class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300 border-b border-white/20">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <a href="{{ url_for('index') }}"
-                    class="flex items-center gap-2 text-primary-800 font-semibold text-xl hover:text-primary-600 transition">
-                    <span class="text-2xl animate-float inline-block">🪴</span> DecorShop
-                </a>
+    <!-- ══ NAVBAR ══ -->
+    <nav class="luxury-nav">
+        <div class="nav-inner">
 
-                <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"
-                    class="lg:hidden p-2 rounded-lg hover:bg-primary-100 transition">
-                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-
-                <div class="hidden lg:flex items-center gap-1">
-                    <a href="{{ url_for('index') }}"
-                        class="px-3 py-2 rounded-lg text-primary-700 hover:text-primary-900 hover:bg-primary-100/50 transition text-sm font-medium">หน้าแรก</a>
-
-                    {% if current_user.is_authenticated %}
-                    {% if current_user.is_admin %}
-                    <a href="{{ url_for('admin_dashboard') }}"
-                        class="px-3 py-2 rounded-lg text-primary-500 hover:text-primary-700 hover:bg-primary-100/50 transition text-sm">จัดการสินค้า</a>
-                    <a href="{{ url_for('admin_orders') }}"
-                        class="px-3 py-2 rounded-lg text-primary-500 hover:text-primary-700 hover:bg-primary-100/50 transition text-sm">จัดการออเดอร์</a>
-                    {% endif %}
-
-                    <div class="w-px h-6 bg-primary-200 mx-2"></div>
-
-                    <a href="{{ url_for('view_cart') }}"
-                        class="px-3 py-2 rounded-lg text-primary-700 hover:text-primary-900 hover:bg-primary-100/50 transition text-sm">🛒
-                        ตะกร้า</a>
-                    <a href="{{ url_for('my_orders') }}"
-                        class="px-3 py-2 rounded-lg text-primary-700 hover:text-primary-900 hover:bg-primary-100/50 transition text-sm">📦
-                        การสั่งซื้อ</a>
-
-                    <a href="{{ url_for('profile') }}"
-                        class="ml-2 flex items-center gap-2 bg-primary-100 hover:bg-primary-200 text-primary-800 rounded-full px-4 py-1.5 transition">
-                        {% if current_user.profile_image %}
-                        <img src="{{ current_user.profile_image }}"
-                            class="w-6 h-6 rounded-full object-cover border-2 border-white shadow-sm">
-                        {% else %}
-                        <span class="text-sm">👤</span>
-                        {% endif %}
-                        <span class="text-sm font-medium">{{ current_user.username }}</span>
-                    </a>
-
-                    <a href="{{ url_for('logout') }}"
-                        class="ml-1 px-3 py-2 text-red-400 hover:text-red-500 transition text-xs">ออกจากระบบ</a>
-                    {% else %}
-                    <a href="{{ url_for('login') }}"
-                        class="px-3 py-2 rounded-lg text-primary-700 hover:text-primary-900 hover:bg-primary-100/50 transition text-sm">เข้าสู่ระบบ</a>
-                    <a href="{{ url_for('register') }}"
-                        class="ml-2 px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full transition text-sm font-medium shadow-md hover:shadow-lg btn-3d">สมัครสมาชิก</a>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div id="mobileMenu" class="hidden lg:hidden pb-4 border-t border-primary-100 mt-2 pt-3 space-y-1">
-                <a href="{{ url_for('index') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-700 hover:bg-primary-100 transition">หน้าแรก</a>
+            <!-- Left links -->
+            <div class="nav-left">
+                <a href="{{ url_for('index') }}" class="nav-link">หน้าแรก</a>
                 {% if current_user.is_authenticated %}
-                {% if current_user.is_admin %}
-                <a href="{{ url_for('admin_dashboard') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-500 hover:bg-primary-100 transition">จัดการสินค้า</a>
-                <a href="{{ url_for('admin_orders') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-500 hover:bg-primary-100 transition">จัดการออเดอร์</a>
-                {% endif %}
-                <a href="{{ url_for('view_cart') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-700 hover:bg-primary-100 transition">🛒 ตะกร้า</a>
-                <a href="{{ url_for('my_orders') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-700 hover:bg-primary-100 transition">📦
-                    การสั่งซื้อ</a>
-                <a href="{{ url_for('profile') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-700 hover:bg-primary-100 transition">👤 {{
-                    current_user.username }}</a>
-                <a href="{{ url_for('logout') }}"
-                    class="block px-3 py-2 rounded-lg text-red-500 hover:bg-red-50 transition">ออกจากระบบ</a>
-                {% else %}
-                <a href="{{ url_for('login') }}"
-                    class="block px-3 py-2 rounded-lg text-primary-700 hover:bg-primary-100 transition">เข้าสู่ระบบ</a>
-                <a href="{{ url_for('register') }}"
-                    class="block px-3 py-2 rounded-lg bg-primary-600 text-white text-center hover:bg-primary-700 transition">สมัครสมาชิก</a>
+                    {% if current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="nav-link nav-link-admin">จัดการสินค้า</a>
+                    <a href="{{ url_for('admin_orders') }}"    class="nav-link nav-link-admin">ออเดอร์</a>
+                    {% endif %}
                 {% endif %}
             </div>
+
+            <!-- Center brand -->
+            <a href="{{ url_for('index') }}" class="nav-brand">DecorShop</a>
+
+            <!-- Right links -->
+            <div class="nav-right">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('view_cart') }}"  class="nav-link">ตะกร้า</a>
+                <a href="{{ url_for('my_orders') }}"  class="nav-link">คำสั่งซื้อ</a>
+                <a href="{{ url_for('profile') }}"    class="nav-link">
+                    {% if current_user.profile_image %}
+                    <img src="{{ current_user.profile_image }}" class="inline w-5 h-5 rounded-full object-cover mr-1 -mt-0.5">
+                    {% endif %}
+                    {{ current_user.username }}
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link nav-link-muted">ออกจากระบบ</a>
+                {% else %}
+                <a href="{{ url_for('login') }}"    class="nav-link">เข้าสู่ระบบ</a>
+                <a href="{{ url_for('register') }}" class="nav-link">สมัครสมาชิก</a>
+                {% endif %}
+            </div>
+
+            <!-- Mobile hamburger -->
+            <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="เมนู">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="{{ url_for('index') }}">หน้าแรก</a>
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin_dashboard') }}" style="color:#7A9476">จัดการสินค้า</a>
+                <a href="{{ url_for('admin_orders') }}"    style="color:#7A9476">จัดการออเดอร์</a>
+                {% endif %}
+                <a href="{{ url_for('view_cart') }}">ตะกร้า</a>
+                <a href="{{ url_for('my_orders') }}">คำสั่งซื้อ</a>
+                <a href="{{ url_for('profile') }}">{{ current_user.username }}</a>
+                <a href="{{ url_for('logout') }}" style="color:#C8C4B8">ออกจากระบบ</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">เข้าสู่ระบบ</a>
+                <a href="{{ url_for('register') }}">สมัครสมาชิก</a>
+            {% endif %}
         </div>
     </nav>
 
-    <main class="flex-1 animate-fade-in-up">
-        <div class="max-w-6xl mx-auto px-4 pb-12 pt-6">
+    <!-- ══ HERO BLOCK (full-width, outside container) ══ -->
+    {% block hero %}{% endblock %}
+
+    <!-- ══ MAIN CONTENT ══ -->
+    <main class="flex-1">
+        <div class="max-w-6xl mx-auto px-6 pb-20 pt-10">
+
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
-            <div class="mb-4 px-4 py-3 rounded-xl text-sm flex justify-between items-center shadow-sm animate-fade-in-up
-                {% if category == 'success' %}bg-green-50 text-green-700 border border-green-200
-                {% elif category == 'danger' %}bg-red-50 text-red-700 border border-red-200
-                {% elif category == 'warning' %}bg-yellow-50 text-yellow-700 border border-yellow-200
-                {% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">
+            <div class="mb-5 px-4 py-3 text-sm flex justify-between items-center animate-fade-in-up
+                border
+                {% if category == 'success' %}bg-green-50 text-green-700 border-green-200
+                {% elif category == 'danger'  %}bg-red-50   text-red-700   border-red-200
+                {% elif category == 'warning' %}bg-yellow-50 text-yellow-700 border-yellow-200
+                {% else                       %}bg-blue-50  text-blue-700  border-blue-200{% endif %}">
                 <span>{{ message }}</span>
-                <button onclick="this.parentElement.remove()"
-                    class="ml-4 opacity-50 hover:opacity-100 transition text-lg leading-none">&times;</button>
+                <button onclick="this.parentElement.remove()" class="ml-4 opacity-40 hover:opacity-100 transition text-lg leading-none">&times;</button>
             </div>
             {% endfor %}
             {% endif %}
@@ -160,11 +139,11 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-primary-100 py-8 mt-auto">
-        <div class="max-w-6xl mx-auto px-4 text-center">
-            <p class="text-lg font-medium text-primary-800 mb-1">🪴 DecorShop</p>
-            <p class="text-sm text-primary-400">คัดสรรเครื่องปั้นดินเผาและของตกแต่งบ้านสไตล์มินิมอลเพื่อคุณ &copy; 2026
-            </p>
+    <!-- ══ FOOTER ══ -->
+    <footer class="border-t border-primary-200 py-10 mt-auto bg-primary-50">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="font-serif text-xl font-medium tracking-widest text-primary-800 mb-2">DECORSHOP</p>
+            <p class="text-xs tracking-widest text-primary-400 uppercase">คัดสรรเครื่องปั้นดินเผาและของตกแต่งบ้านสไตล์มินิมอล &copy; 2026</p>
         </div>
     </footer>
 
